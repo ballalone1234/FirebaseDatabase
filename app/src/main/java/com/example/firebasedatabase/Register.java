@@ -31,7 +31,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ActionBar actionBar;
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Register");
+        actionBar.setTitle("Register B6301095");
 // Define ColorDrawable object and parse color
 // using parseColor method
 // with color hash code as its parameter

@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ActionBar actionBar;
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Log in");
+        actionBar.setTitle("Log in B6301095");
         ColorDrawable colorDrawable
                 = new ColorDrawable(Color.parseColor("#5bf03a"));
 // Set BackgroundDrawable

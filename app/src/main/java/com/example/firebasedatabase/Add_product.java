@@ -1,34 +1,38 @@
 package com.example.firebasedatabase;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class Add_product extends AppCompatActivity {
 
     EditText name, description;
+    TextView userEmail;
 
     FirebaseFirestore db;
     @Override
@@ -44,6 +48,16 @@ public class Add_product extends AppCompatActivity {
         btnSave.setOnClickListener(v -> saveImage());
         name = findViewById(R.id.nameP);
         description = findViewById(R.id.DetailP);
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor("#5bf03a"));
+// Set BackgroundDrawable
+        actionBar.setBackgroundDrawable(colorDrawable);
+        userEmail = findViewById(R.id.user_email);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String email = auth.getCurrentUser().getEmail();
+        userEmail.setText("Login by : " + email);
 
     }
 
@@ -53,22 +67,53 @@ public class Add_product extends AppCompatActivity {
         intent.setType("image/*");
         startActivityForResult(intent, 1);
     }
-    File file;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        setTitle("Add Product B6301095");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.add_btn);
+        MenuItem item1 = menu.findItem(R.id.menu_list);
+        MenuItem item2 = menu.findItem(R.id.logout);
+        item1.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(Add_product.this, List_product.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        item2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(Add_product.this, Login.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        return true;
+    }
     Uri filePath;
+    Bitmap bitmap;
+    ImageView imageView;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
            super.onActivityResult(requestCode, resultCode, data);
 
-            ImageView imageView = findViewById(R.id.imagePreView);
+             imageView = findViewById(R.id.imagePreView);
             if(requestCode == 1 && resultCode == RESULT_OK){
                 imageView.setImageURI(data.getData());
+                filePath = data.getData();
             }
             else if(requestCode == 0 && resultCode == RESULT_OK){
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                File file = new File(data.getData().getPath());
+                bitmap = (Bitmap) data.getExtras().get("data");
                 imageView.setImageBitmap(bitmap);
+
+
             }
-            filePath = data.getData();
+
         }
 
         //save data to firebase firestore
@@ -90,11 +135,12 @@ public class Add_product extends AppCompatActivity {
                     });
         }
 
+
     //save image to firebase storage
         private void saveImage(){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference riversRef = storageRef.child("images/"+filePath.getLastPathSegment());
+        StorageReference riversRef = storageRef.child("images/"+ Timestamp.now());
             if (filePath != null) {
                 riversRef.putFile(filePath)
                         .addOnSuccessListener(taskSnapshot -> {
@@ -117,6 +163,7 @@ public class Add_product extends AppCompatActivity {
     }
 
 
+    //method save data to firebase
 
     //create method for open camera and take picture
     private void openCamera(){

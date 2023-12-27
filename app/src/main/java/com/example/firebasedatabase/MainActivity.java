@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar;
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Log in");
+        actionBar.setTitle("Shopping App B6301095");
         ColorDrawable colorDrawable
                 = new ColorDrawable(Color.parseColor("#5bf03a"));
 // Set BackgroundDrawable

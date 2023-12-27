@@ -19,10 +19,16 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
-            android:background="#872B2B"
-            android:backgroundTint="#BAAAD6"
-            app:srcCompat="@drawable/shopingicon"
-            tools:src="@drawable/shopingicon" />
+            app:srcCompat="@drawable/cart_svgrepo_com"
+            tools:src="@drawable/cart_svgrepo_com" />
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="center" />
+
         <EditText
             android:id="@+id/nameP"
             android:layout_width="wrap_content"
@@ -33,7 +39,7 @@
             android:layout_marginBottom="5dp"
             android:ems="10"
             android:hint="Name of product"
-            android:inputType="textEmailAddress" />
+           />
         <EditText
             android:id="@+id/DetailP"
             android:layout_width="wrap_content"
@@ -43,7 +49,7 @@
             android:layout_marginBottom="5dp"
             android:ems="10"
             android:hint="Detail of product"
-            android:inputType="textPassword" />
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
